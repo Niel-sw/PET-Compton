@@ -1,0 +1,201 @@
+#=====================================================
+# WHOLE GAMMA IMAGING (WGI)
+#=====================================================
+
+/gate/geometry/setMaterialDatabase    GateMaterials.db
+
+#       W O R L D
+/gate/world/geometry/setXLength       400. cm
+/gate/world/geometry/setYLength       400. cm
+/gate/world/geometry/setZLength       400. cm
+
+#       S Y S T E M   0
+/gate/world/daughters/name                    cylindricalPET
+/gate/world/daughters/insert                  cylinder
+/gate/cylindricalPET/geometry/setRmax         85.0 cm
+/gate/cylindricalPET/geometry/setRmin         80. cm
+/gate/cylindricalPET/geometry/setHeight       23.2 cm
+/gate/cylindricalPET/setMaterial              Air
+/gate/cylindricalPET/vis/forceWireframe
+/gate/cylindricalPET/vis/setColor             white
+
+#	    H E A D   A B S O R B E R   1
+/gate/cylindricalPET/daughters/name           headA
+/gate/cylindricalPET/daughters/insert         box
+/gate/headA/placement/setTranslation          83.0 0.0 0.0 cm
+/gate/headA/geometry/setXLength               2.   cm
+/gate/headA/geometry/setYLength               4.64 cm
+/gate/headA/geometry/setZLength               4.64 cm
+/gate/headA/setMaterial                       Air
+/gate/headA/vis/forceWireframe
+/gate/headA/vis/setColor                      yellow
+
+#	    C R Y S T A L   A B S O R B E R   2
+/gate/headA/daughters/name                    crystalA
+/gate/headA/daughters/insert                  box
+/gate/crystalA/geometry/setXLength            5.   mm
+/gate/crystalA/geometry/setYLength            4.64 mm
+/gate/crystalA/geometry/setZLength            4.64 mm
+/gate/crystalA/setMaterial                    GAGG
+/gate/crystalA/vis/forceWireframe
+/gate/crystalA/vis/setColor                   red
+
+#	    H E A D   S C A T T E R E R   3
+/gate/cylindricalPET/daughters/name           headS
+/gate/cylindricalPET/daughters/insert         box
+/gate/headS/placement/setTranslation          80.0 0.0 0.0 cm
+/gate/headS/geometry/setXLength               1.   cm
+/gate/headS/geometry/setYLength               4.64 cm
+/gate/headS/geometry/setZLength               4.64 cm
+/gate/headS/setMaterial                       Air
+/gate/headS/vis/forceWireframe
+/gate/headS/vis/setColor                      yellow
+
+#	    C R Y S T A L   S C A T T E R E R   4
+/gate/headS/daughters/name                    crystalS
+/gate/headS/daughters/insert                  box
+/gate/crystalS/geometry/setXLength            10.  mm
+/gate/crystalS/geometry/setYLength            4.64 mm
+/gate/crystalS/geometry/setZLength            4.64 mm
+/gate/crystalS/setMaterial                    Ge
+/gate/crystalS/vis/forceWireframe
+/gate/crystalS/vis/setColor                   red
+
+
+#	    R E P E A T   C R Y S T A L   A B S O R B E R 
+/gate/crystalA/repeaters/insert               cubicArrayA
+/gate/crystalA/cubicArrayA/setRepeatNumberX   4
+/gate/crystalA/cubicArrayA/setRepeatNumberY   10
+/gate/crystalA/cubicArrayA/setRepeatNumberZ   5
+/gate/crystalA/cubicArrayA/setRepeatVector    5.0 4.64 4.64 mm
+
+/gate/crystalS/repeaters/insert               cubicArrayS
+/gate/crystalS/cubicArrayS/setRepeatNumberX   1
+/gate/crystalS/cubicArrayS/setRepeatNumberY   10
+/gate/crystalS/cubicArrayS/setRepeatNumberZ   5
+/gate/crystalS/cubicArrayS/setRepeatVector    0.0 4.64 4.64 mm
+
+
+#	    R E P E A T   H E A D
+/gate/headA/repeaters/insert                  ring
+/gate/headA/ring/setRepeatNumber              48
+
+/gate/headS/repeaters/insert                  ring
+/gate/headS/ring/setRepeatNumber              48
+
+
+#	    A T T A C H   S Y S T E M
+/gate/systems/cylindricalPET/rsector/attach   headA
+/gate/systems/cylindricalPET/module/attach    crystalA
+
+/gate/systems/cylindricalPET/rsector/attach   headS
+/gate/systems/cylindricalPET/module/attach    crystalS
+
+
+#	    A T T A C H   C R Y S T A L   S D
+/gate/Ge/attachCrystalSD
+/gate/Ge/attachCrystalSD
+
+/gate/cylindricalPET/vis
+
+#       P H A N T O M
+/gate/world/daughters/name                    phantom
+/gate/world/daughters/insert                  cylinder
+/gate/phantom/geometry/setRmax                10 cm
+/gate/phantom/geometry/setHeight              70 cm
+/gate/phantom/setMaterial                     Water
+/gate/phantom/vis/setColor                    blue
+/gate/phantom/attachPhantomSD
+
+
+#       P H Y S I C S
+/gate/physics/addProcess PhotoElectric
+/gate/physics/processes/PhotoElectric/setModel StandardModel
+
+/gate/physics/addProcess Compton
+/gate/physics/processes/Compton/setModel StandardModel
+
+/gate/physics/addProcess RayleighScattering
+/gate/physics/processes/RayleighScattering/setModel PenelopeModel
+
+/gate/physics/addProcess ElectronIonisation
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e-
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e+
+
+/gate/physics/addProcess Bremsstrahlung
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e-
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e+
+
+/gate/physics/addProcess PositronAnnihilation
+
+/gate/physics/addProcess MultipleScattering e+
+/gate/physics/addProcess MultipleScattering e-
+
+/gate/physics/processList Enabled
+/gate/physics/processList Initialized
+
+
+#       I N I T I A L I Z E
+/gate/run/initialize
+
+#       D I G I T I Z E R
+/gate/digitizer/Singles/insert                          adder
+/gate/digitizer/Singles/insert                          readout
+
+/gate/digitizer/Singles/readout/setDepth                1
+/gate/digitizer/Singles/insert                          blurring
+/gate/digitizer/Singles/blurring/setResolution          0.1
+/gate/digitizer/Singles/blurring/setEnergyOfReference   511. keV
+/gate/digitizer/Singles/insert                          thresholder
+/gate/digitizer/Singles/thresholder/setThreshold        400. keV
+/gate/digitizer/Singles/insert                          upholder
+/gate/digitizer/Singles/upholder/setUphold              600. keV
+
+/gate/digitizer/Singles/readout/setDepth                3
+/gate/digitizer/Singles/insert                          blurring
+/gate/digitizer/Singles/blurring/setResolution          0.05
+/gate/digitizer/Singles/blurring/setEnergyOfReference   511. keV
+/gate/digitizer/Singles/insert                          thresholder
+/gate/digitizer/Singles/thresholder/setThreshold        400. keV
+/gate/digitizer/Singles/insert                          upholder
+/gate/digitizer/Singles/upholder/setUphold              600. keV
+
+/gate/digitizer/Coincidences/setWindow 10. ns
+/gate/digitizer/name delay
+/gate/digitizer/insert coincidenceSorter
+/gate/digitizer/delay/setWindow 10. ns
+/gate/digitizer/delay/setOffset 500. ns
+
+
+#   S O U R C E
+/gate/source/addSource                  Sc44
+/gate/source/Sc44/setType               backtoback
+/gate/source/Sc44/gps/particle          gamma
+/gate/source/Sc44/gps/energytype        Mono
+/gate/source/Sc44/monoenergy            0.511 MeV
+/gate/source/Sc44/gps/shape             Cylinder
+/gate/source/Sc44/gps/radius            0.5 mm
+/gate/source/Sc44/gps/halfz             70 cm
+/gate/source/Sc44/setForcedUnstableFlag true
+/gate/source/Sc44/setForcedHalfLife     14551.2 s
+/gate/source/Sc44/angtype               iso
+/gate/source/Sc44/visualize red
+/gate/source/list
+
+
+#   D A T A   O U T P U T
+/gate/output/root/enable
+/gate/output/root/setFileName gate_simulation
+
+/gate/application/setTimeSlice 1 s
+/gate/application/setTimeStart 0 s
+/gate/application/setTimeStop 6 s
+
+/gate/random/setEngineSeed default
+/gate/random/setEngineSeed auto
+/gate/random/setEngineSeed 123456789
+
+/gate/application/startDAQ
+
+
+
