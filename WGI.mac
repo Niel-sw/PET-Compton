@@ -1,5 +1,5 @@
 #=====================================================
-# WHOLE GAMMA IMAGING (WGI)
+#   P E T - C O M P T O N
 #=====================================================
 
 /gate/geometry/setMaterialDatabase    GateMaterials.db
@@ -10,93 +10,101 @@
 /gate/world/geometry/setZLength       400. cm
 
 #       S Y S T E M   0
-/gate/world/daughters/name                    cylindricalPET
-/gate/world/daughters/insert                  cylinder
-/gate/cylindricalPET/geometry/setRmax         85.0 cm
-/gate/cylindricalPET/geometry/setRmin         80. cm
-/gate/cylindricalPET/geometry/setHeight       23.2 cm
-/gate/cylindricalPET/setMaterial              Air
-/gate/cylindricalPET/vis/forceWireframe
-/gate/cylindricalPET/vis/setColor             white
+/gate/world/daughters/name          cPET
+/gate/world/daughters/insert        cylinder
+/gate/cPET/geometry/setRmax         85.0 cm
+/gate/cPET/geometry/setRmin         83. cm
+/gate/cPET/geometry/setHeight       23.2 cm
+/gate/cPET/setMaterial              Air
+/gate/cPET/vis/forceWireframe
+/gate/cPET/vis/setColor             white
 
 #	    H E A D   A B S O R B E R   1
-/gate/cylindricalPET/daughters/name           headA
-/gate/cylindricalPET/daughters/insert         box
-/gate/headA/placement/setTranslation          83.0 0.0 0.0 cm
-/gate/headA/geometry/setXLength               2.   cm
-/gate/headA/geometry/setYLength               4.64 cm
-/gate/headA/geometry/setZLength               4.64 cm
-/gate/headA/setMaterial                       Air
+/gate/cPET/daughters/name               headA
+/gate/cPET/daughters/insert             box
+/gate/headA/placement/setTranslation    83.0 0.0 0.0 cm
+/gate/headA/geometry/setXLength         2.   cm
+/gate/headA/geometry/setYLength         4.64 cm
+/gate/headA/geometry/setZLength         4.64 cm
+/gate/headA/setMaterial                 Air
 /gate/headA/vis/forceWireframe
-/gate/headA/vis/setColor                      yellow
+/gate/headA/vis/setColor                yellow
 
 #	    C R Y S T A L   A B S O R B E R   2
-/gate/headA/daughters/name                    crystalA
-/gate/headA/daughters/insert                  box
-/gate/crystalA/geometry/setXLength            5.   mm
-/gate/crystalA/geometry/setYLength            4.64 mm
-/gate/crystalA/geometry/setZLength            4.64 mm
-/gate/crystalA/setMaterial                    GAGG
+/gate/headA/daughters/name              crystalA
+/gate/headA/daughters/insert            box
+/gate/crystalA/geometry/setXLength      5.   mm
+/gate/crystalA/geometry/setYLength      4.64 mm
+/gate/crystalA/geometry/setZLength      4.64 mm
+/gate/crystalA/setMaterial              GAGG
 /gate/crystalA/vis/forceWireframe
-/gate/crystalA/vis/setColor                   red
+/gate/crystalA/vis/setColor             red
 
-#	    H E A D   S C A T T E R E R   3
-/gate/cylindricalPET/daughters/name           headS
-/gate/cylindricalPET/daughters/insert         box
-/gate/headS/placement/setTranslation          80.0 0.0 0.0 cm
-/gate/headS/geometry/setXLength               1.   cm
-/gate/headS/geometry/setYLength               4.64 cm
-/gate/headS/geometry/setZLength               4.64 cm
-/gate/headS/setMaterial                       Air
+#       S Y S T E M   3
+/gate/world/daughters/name              cCompton
+/gate/world/daughters/insert            cylinder
+/gate/cCompton/geometry/setRmax         85.0 cm
+/gate/cCompton/geometry/setRmin         83. cm
+/gate/cCompton/geometry/setHeight       23.2 cm
+/gate/cCompton/setMaterial              Air
+/gate/cCompton/vis/forceWireframe
+/gate/cCompton/vis/setColor             white
+
+#	    H E A D   S C A T T E R E R   4
+/gate/cCompton/daughters/name           headS
+/gate/cCompton/daughters/insert         box
+/gate/headS/placement/setTranslation    80.0 0.0 0.0 cm
+/gate/headS/geometry/setXLength         1.   cm
+/gate/headS/geometry/setYLength         4.64 cm
+/gate/headS/geometry/setZLength         4.64 cm
+/gate/headS/setMaterial                 Air
 /gate/headS/vis/forceWireframe
-/gate/headS/vis/setColor                      yellow
+/gate/headS/vis/setColor                yellow
 
-#	    C R Y S T A L   S C A T T E R E R   4
-/gate/headS/daughters/name                    crystalS
-/gate/headS/daughters/insert                  box
-/gate/crystalS/geometry/setXLength            10.  mm
-/gate/crystalS/geometry/setYLength            4.64 mm
-/gate/crystalS/geometry/setZLength            4.64 mm
-/gate/crystalS/setMaterial                    Ge
+#	    C R Y S T A L   S C A T T E R E R   5
+/gate/headS/daughters/name              crystalS
+/gate/headS/daughters/insert            box
+/gate/crystalS/geometry/setXLength      10.  mm
+/gate/crystalS/geometry/setYLength      4.64 mm
+/gate/crystalS/geometry/setZLength      4.64 mm
+/gate/crystalS/setMaterial              Germanium
 /gate/crystalS/vis/forceWireframe
-/gate/crystalS/vis/setColor                   red
+/gate/crystalS/vis/setColor             red
 
 
 #	    R E P E A T   C R Y S T A L   A B S O R B E R 
-/gate/crystalA/repeaters/insert               cubicArrayA
-/gate/crystalA/cubicArrayA/setRepeatNumberX   4
-/gate/crystalA/cubicArrayA/setRepeatNumberY   10
-/gate/crystalA/cubicArrayA/setRepeatNumberZ   5
-/gate/crystalA/cubicArrayA/setRepeatVector    5.0 4.64 4.64 mm
+/gate/crystalA/repeaters/insert               cubicArray
+/gate/crystalA/cubicArray/setRepeatNumberX    4
+/gate/crystalA/cubicArray/setRepeatNumberY    10
+/gate/crystalA/cubicArray/setRepeatNumberZ    5
+/gate/crystalA/cubicArray/setRepeatVector     5.0 4.64 4.64 mm
 
-/gate/crystalS/repeaters/insert               cubicArrayS
-/gate/crystalS/cubicArrayS/setRepeatNumberX   1
-/gate/crystalS/cubicArrayS/setRepeatNumberY   10
-/gate/crystalS/cubicArrayS/setRepeatNumberZ   5
-/gate/crystalS/cubicArrayS/setRepeatVector    0.0 4.64 4.64 mm
+/gate/crystalS/repeaters/insert               cubicArray
+/gate/crystalS/cubicArray/setRepeatNumberX    1
+/gate/crystalS/cubicArray/setRepeatNumberY    10
+/gate/crystalS/cubicArray/setRepeatNumberZ    5
+/gate/crystalS/cubicArray/setRepeatVector     0.0 4.64 4.64 mm
 
 
 #	    R E P E A T   H E A D
-/gate/headA/repeaters/insert                  ring
-/gate/headA/ring/setRepeatNumber              48
-
-/gate/headS/repeaters/insert                  ring
-/gate/headS/ring/setRepeatNumber              48
-
-
+/gate/headA/repeaters/insert        ring
+/gate/headA/ring/setRepeatNumber    48
 #	    A T T A C H   S Y S T E M
-/gate/systems/cylindricalPET/rsector/attach   headA
-/gate/systems/cylindricalPET/module/attach    crystalA
+/gate/systems/cPET/rsector/attach   headA
+/gate/systems/cPET/module/attach    crystalA
 
-/gate/systems/cylindricalPET/rsector/attach   headS
-/gate/systems/cylindricalPET/module/attach    crystalS
+#	    R E P E A T   H E A D
+/gate/headS/repeaters/insert            ring
+/gate/headS/ring/setRepeatNumber        48
+#	    A T T A C H   S Y S T E M
+/gate/systems/cCompton/rsector/attach   headS
+/gate/systems/cCompton/module/attach    crystalS
 
 
 #	    A T T A C H   C R Y S T A L   S D
-/gate/Ge/attachCrystalSD
-/gate/Ge/attachCrystalSD
+/gate/GAGG/attachCrystalSD
+/gate/Germanium/attachCrystalSD
 
-/gate/cylindricalPET/vis
 
 #       P H A N T O M
 /gate/world/daughters/name                    phantom
@@ -151,7 +159,7 @@
 /gate/digitizer/Singles/insert                          upholder
 /gate/digitizer/Singles/upholder/setUphold              600. keV
 
-/gate/digitizer/Singles/readout/setDepth                3
+/gate/digitizer/Singles/readout/setDepth                4
 /gate/digitizer/Singles/insert                          blurring
 /gate/digitizer/Singles/blurring/setResolution          0.05
 /gate/digitizer/Singles/blurring/setEnergyOfReference   511. keV
@@ -160,11 +168,11 @@
 /gate/digitizer/Singles/insert                          upholder
 /gate/digitizer/Singles/upholder/setUphold              600. keV
 
-/gate/digitizer/Coincidences/setWindow 10. ns
-/gate/digitizer/name delay
-/gate/digitizer/insert coincidenceSorter
-/gate/digitizer/delay/setWindow 10. ns
-/gate/digitizer/delay/setOffset 500. ns
+/gate/digitizer/Coincidences/setWindow  10. ns
+/gate/digitizer/name                    delay
+/gate/digitizer/insert                  coincidenceSorter
+/gate/digitizer/delay/setWindow         10. ns
+/gate/digitizer/delay/setOffset         500. ns
 
 
 #   S O U R C E
@@ -179,7 +187,7 @@
 /gate/source/Sc44/setForcedUnstableFlag true
 /gate/source/Sc44/setForcedHalfLife     14551.2 s
 /gate/source/Sc44/angtype               iso
-/gate/source/Sc44/visualize red
+/gate/source/Sc44/visualize             red
 /gate/source/list
 
 
