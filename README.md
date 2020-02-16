@@ -1,5 +1,6 @@
 # PET-Compton
-Application of Compton concept on PET.
+Application of Compton concept on PET. 
+This simulation is more or less like Camera Compton but with different method for reconstruction.
 
                                     PET                 Compton
     Material                        GAGG                Ge
